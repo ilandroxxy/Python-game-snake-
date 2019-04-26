@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <conio.h>
+#include <cstdlib>
 using namespace sf;
 
 int N = 30, M = 20;
@@ -14,12 +15,14 @@ int dir, num = 2, max = 0, spe = 1, max2 = 0;
 
 struct Snake
 {
-	int x, y;
+	int x;
+	int y;
 }  s[100];
 
 struct Fruct
 {
-	int x, y;
+	int x;
+	int y;
 } f;
 
 void Tick()
@@ -34,7 +37,7 @@ void Tick()
 	if (dir == 1) s[0].x -= 1;
 	if (dir == 2) s[0].x += 1;
 	if (dir == 3) s[0].y -= 1;
-	
+
 	if ((s[0].x == f.x) && (s[0].y == f.y))
 	{
 		num++;
@@ -56,15 +59,15 @@ void Tick()
 			delay = 0.04;
 			spe = 4;
 		}
-		
+
 		f.x = rand() % N;
 		f.y = rand() % M;
 	}
 
-	if (s[0].x > N-1) s[0].x = 0;  
-	if (s[0].x < 0) s[0].x = N-1;
-	if (s[0].y > M-1) s[0].y = 0;  
-	if (s[0].y < 0) s[0].y = M-1;
+	if (s[0].x > N - 1) s[0].x = 0;
+	if (s[0].x < 0) s[0].x = N - 1;
+	if (s[0].y > M - 1) s[0].y = 0;
+	if (s[0].y < 0) s[0].y = M - 1;
 
 
 	for (int i = 1; i < num; i++)
@@ -79,14 +82,17 @@ void Tick()
 int main()
 {
 	srand(time(NULL));
-	RenderWindow window(VideoMode(w + 240, h), "Snake Game", 
-Style::None);  //Style::Fullscreen  //Style::None
+	RenderWindow window(VideoMode(w + 240, h), "Snake Game", Style::None);  //Style::Fullscreen  //Style::None
 
 	Texture t1, t2, t3;
 	t1.loadFromFile("images/77.png");
 	t2.loadFromFile("images/23.png");
 	t3.loadFromFile("images/666.png");
-	
+	if (!t1.loadFromFile("images/77.png")) return 0;
+	if (!t2.loadFromFile("images/23.png")) return 0;
+	if (!t3.loadFromFile("images/666.png")) return 0;
+
+
 	Sprite sprite1(t1);
 	Sprite sprite2(t2);
 	Sprite sprite3(t3);
@@ -94,7 +100,7 @@ Style::None);  //Style::Fullscreen  //Style::None
 	Clock clock;
 	float timer = 0;
 
-	
+
 	f.x = 10;
 	f.y = 10;
 
@@ -112,7 +118,7 @@ Style::None);  //Style::Fullscreen  //Style::None
 				window.close();
 			}
 		}
-		
+
 		if (Keyboard::isKeyPressed(Keyboard::Left) && R == 1)
 		{
 			dir = 1;
@@ -120,7 +126,7 @@ Style::None);  //Style::Fullscreen  //Style::None
 			U = 1;
 			D = 1;
 		}
-		if (Keyboard::isKeyPressed(Keyboard::Right) && L == 1 )
+		if (Keyboard::isKeyPressed(Keyboard::Right) && L == 1)
 		{
 			dir = 2;
 			R = 0;
@@ -161,9 +167,12 @@ Style::None);  //Style::Fullscreen  //Style::None
 		window.clear();
 
 		Font font;
-		if (!font.loadFromFile("images/5555.ttf")) {}
-		Text text, text0, text2, text3, text4, text5 , text6, 
-text7, text8, text9;
+		font.loadFromFile("images/5555.ttf");
+		if (!font.loadFromFile("images/5555.ttf"))
+		{
+			return 0;
+		}
+		Text text, text0, text2, text3, text4, text5, text6, text7, text8, text9;
 
 		if (num < max2)
 		{
@@ -255,7 +264,7 @@ text7, text8, text9;
 			text5.setPosition(990, 580);
 			window.draw(text5);
 		}
-		
+
 
 		for (int i = 0; i < N; i++)
 		{
@@ -277,8 +286,6 @@ text7, text8, text9;
 
 
 		window.display();
-
 	}
-
 	return 0;
 }
